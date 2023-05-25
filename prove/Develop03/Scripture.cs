@@ -29,16 +29,29 @@ public class Scripture
         Console.WriteLine($"{_reference._referenceText}");
         Console.WriteLine();
 
+        int index = 0;
+
         foreach (Word word in _words)
         {
             if(word._isHidden)
             {
                 Console.Write("____ ");
             }
+            else if(word.wordIsDigit(word._text))
+            {
+                if (index != 0){
+                    Console.WriteLine();
+                    Console.WriteLine();
+                }
+                
+                Console.Write(word._text + " ");
+            }
             else
             {
                 Console.Write(word._text + " ");
             }
+
+            index ++;
         }
         Console.WriteLine();
         Console.WriteLine();
@@ -54,8 +67,8 @@ public class Scripture
 
         int randomIndex = _random.Next(0, unhiddenWords.Count());
         Word randomWord = unhiddenWords[randomIndex];
+        
         randomWord.Hide();
-
     }
 
     public List<Word> GetUnhiddenWords()
@@ -64,38 +77,11 @@ public class Scripture
 
         foreach(Word word in _words)
         {
-            if(!word._isHidden)
+            if(!word._isHidden && !word.wordIsDigit(word._text))
             {
                 unhiddenWords.Add(word);
             }
         }
         return unhiddenWords;
-    }
-}
-
-public class Reference
-{
-    public string _referenceText {get; private set;}
-
-    public Reference(string referenceText)
-    {
-        _referenceText = referenceText;
-    }
-}
-
-public class Word
-{
-    // C sharp gives you automatic getters and setters, which can be be set up in the declaration of the attribute instead of writing a getter or setter function. Ethan showed them to us. a private set only allows functions inside of the class to directly set the attribute.
-    public string _text {get; private set;}
-    public bool _isHidden {get; private set;}
-
-    public Word(string text)
-    {
-        _text = text;
-    }
-
-    public void Hide()
-    {
-        _isHidden = true;
     }
 }
